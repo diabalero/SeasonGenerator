@@ -1,0 +1,115 @@
+import random
+
+# Generate a random score based on the position
+def randomScore(position):
+    if position == 'QB':
+        positionScore = round(random.uniform(13.5,28.5), 2)
+    elif position == 'RB':
+        positionScore = round(random.uniform(8.5,22.5), 2)
+    elif position == 'WR':
+        positionScore = round(random.uniform(10.5,20.5), 2)
+    elif position == 'TE':
+        positionScore = round(random.uniform(1.5,14.5), 2)
+    elif position == 'FLEX':
+        positionScore = round(random.uniform(6.5,12.5), 2)
+    elif position == 'K':
+        positionScore = round(random.uniform(3,15), 2)
+    elif position == 'DEF':
+        positionScore = round(random.uniform(0,15), 2)
+
+    return positionScore
+
+# Class to define a Team
+class Team:
+    owner = ""
+    teamName = ""
+    QB = "QB"
+    RB1 = "RB"
+    RB2 = "RB"
+    WR1 = "WR"
+    WR2 = "WR"
+    TE = "TE"
+    FLEX = "WR"
+    K = "K"
+    DEF = "DEF"
+
+    def roster(self):
+        desc_str = " Owner: %s \n Team Name: %s \n QB: %s \n RB1: %s \n RB2: %s \n WR1: %s \n WR2: %s \n TE: %s \n FLEX: %s \n K: %s \n DEF: %s \n" % (self.owner, self.teamName, self.QB, self.RB1, self.RB2, self.WR1, self.WR2, self.TE, self.FLEX, self.K, self.DEF)
+        return desc_str
+
+# Class to set track and set weeklyScores by week and team
+class weeklyScore:
+    teamName = ""
+    week = ""
+    qbScore = ""
+    rb1Score = ""
+    rb2Score = ""
+    wr1Score = ""
+    wr2Score = ""
+    teScore = ""
+    flexScore = ""
+    kScore = ""
+    defScore = ""
+
+    # Returns the weekly total
+    def weeklyTotal(self):
+        totalScore = self.qbScore + self.rb1Score + self.rb2Score + self.wr1Score + self.wr2Score + self.teScore + self.flexScore + self.kScore + self.defScore
+        totalScore = round(totalScore, 2)
+        return totalScore
+
+    # Set the weekly score for each position by calling randomScore 
+    def setScore(self):
+        self.qbScore = randomScore("QB")
+        self.rb1Score = randomScore("RB")
+        self.rb2Score = randomScore("RB")
+        self.wr1Score = randomScore("WR")
+        self.wr2Score = randomScore("WR")
+        self.teScore = randomScore("TE")
+        self.flexScore = randomScore("WR")
+        self.kScore = randomScore("K")
+        self.defScore = randomScore("DEF")
+        return
+
+
+# Set team names using a dictionary
+allTeams = {
+    "1": "teamOne",
+    "2": "teamTwo",
+    "3": "teamThree",
+    "4": "teamFour",
+    "5": "teamFive",
+    "6": "teamSix",
+    "7": "teamSeven",
+    "8": "teamEight",
+    "9": "teamNine",
+    "10": "teamTen"
+}
+
+# Iterate for the number of weeks specified for the range. A new text file is created for each week
+for y in range(1, 14):
+# Open a text file
+    filename = "ResultsWeek" + str(y) + ".txt"
+    file = open(filename,"w")
+
+    # Create each team and generate 1 week results, then write those results to a file
+    for x in allTeams:
+        team = Team()
+        team.owner = allTeams[x]
+        team.teamName = allTeams[x]
+        teamWeekly = weeklyScore()
+        teamWeekly.teamName = team.teamName
+        teamWeekly.week = "Week " + str(y)
+        teamWeekly.setScore()
+        for key, value in teamWeekly.__dict__.items():
+            file.write('%s: %s\n' % (key, value))
+        strTotal = str(teamWeekly.weeklyTotal())
+        file.write("Total: " + strTotal)
+        file.write('\n')
+
+    file.close()
+
+
+
+
+
+
